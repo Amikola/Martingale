@@ -1,7 +1,8 @@
 from wheel import Wheel
 
-startingMoney = 100000000
+startingMoney = 10000000
 numberOfGames = 100000
+bet = 1
 
 money = startingMoney
 wheel = Wheel()
@@ -9,32 +10,46 @@ biggestFail = 0
 currentFail = 0
 
 def main(): 
-    global money, currentFail, numberOfGames
+    global money, currentFail, numberOfGames, bet
 
     counter = 0
     
     while counter < numberOfGames and money > 0: 
         currentFail = 0
-        martinGale(1)
+        martinGale(bet)
         counter += 1 
 
 
-    calculateFacts(counter, 2, 2*6*60)  
+    calculateFacts(counter, 2, 6)  
 
 
 
 
-def calculateFacts(numberOfGames: int, gamePerMinute: int, gameTimePerDay: int): 
-    global money, startingMoney
+def calculateFacts(numberOfGames: int, gamePerMinute: int, hoursPerDay: int ): 
+
+    global money, startingMoney, bet
 
     minutesPlayed = numberOfGames / gamePerMinute
-    days = minutesPlayed / gameTimePerDay
+    days = minutesPlayed / (gamePerMinute*60*hoursPerDay)
     hours = minutesPlayed / 60
     wage = (money - startingMoney) / hours
+    bankRoll = 0
 
-    print("Biggest loss streak:", biggestFail)
+    for i in range(0, biggestFail + 1): 
+        bankRoll += pow(2, i)
+    
+
+    print("\n Welcome to Amikola's Martingale simulator \n")
     print("This means playing for", days, "days")
-    print("Your hourly wage was:", wage, "euros per hour")
+    print("Your hourly wage was:", wage, "€/h")
+    print("Biggest loss streak:", biggestFail)
+    print("Largets bet: ", pow(2, biggestFail), "€" )
+    print("Needing bankroll: ",bankRoll, "€" )
+    print("Assumptions: ")
+    print("Starting bet: ", bet, "€")
+    print("Hours per day played: ", hoursPerDay)
+    print ("Games per minute: ", gamePerMinute)
+    print("\n")
 
 
 
